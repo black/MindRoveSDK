@@ -8,7 +8,7 @@ from mindrove.board_shim import BoardShim, MindRoveInputParams, BoardIds
 from mindrove.data_filter import DataFilter, FilterTypes, DetrendOperations
 
 """
-This example demonstrates how to plot HR and SPO₂ data in real-time from a Mindrove device.
+This example demonstrates how to plot raw PPG data in real-time from a Mindrove device.
 
 Depending on the configuration of device, the device either sends heart rate and SPO₂ values or raw PPG values.
 This example plots the heart rate and SPO₂ values if available, if not, the plot will be empty. In this case you can use the `plot_raw_ppg_real_time.py` example instead.
@@ -19,11 +19,11 @@ class Graph:
     def __init__(self, board_shim):
         self.board_id = board_shim.get_board_id()
         self.board_shim = board_shim
-        # Use PPG channels (e.g., SPO₂ and heart rate)
-        self.ppg_channels = BoardShim.get_ppg_channels(self.board_id)
+        # Use RAW PPG channels (e.g., ir, red, green ppg values)
+        self.ppg_channels = BoardShim.get_ppg_raw_channels(self.board_id)
         self.sampling_rate = BoardShim.get_sampling_rate(self.board_id)
         self.update_speed_ms = 50
-        self.window_size = 200
+        self.window_size = 20
         self.num_points = self.window_size * self.sampling_rate
 
         self.app = QtGui.QApplication([])
@@ -64,13 +64,11 @@ class Graph:
             p.showAxis('bottom', False)
             p.setMenuEnabled('bottom', False)
             if i == 0:
-                p.setTitle('Heart Rate (50-180)')
-                p.setYRange(50, 180, padding=0)
+                p.setTitle('IR PPG')
             elif i == 1:
-                p.setTitle('SPO₂ (90-100)')
-                p.setYRange(90, 100, padding=0)
+                p.setTitle('RED PPG')
             else:
-                p.setTitle(f'Channel {self.ppg_channels[i]}')
+                p.setTitle(f'GREEN PPG')
                 
             self.plots.append(p)
             curve = p.plot()
@@ -82,18 +80,27 @@ class Graph:
         latest_values_text = "Latest PPG Values:\n"
         # Update each plot with new data and prepare the text with the latest sample
 
-        heart_rate_channel = self.ppg_channels[0]
-        spo2_channel = self.ppg_channels[1]
+        ir_channel = self.ppg_channels[0]
+        red_channel = self.ppg_channels[1]
+        green_channel = self.ppg_channels[2]
 
-        latest_hr_val = data[heart_rate_channel][-1]
-        latest_spo2_val = data[spo2_channel][-1]
+        latest_hr_val = -1
+        latest_hrv_val = -1
 
-        self.curves[0].setData(data[heart_rate_channel].tolist())
-        self.curves[1].setData(data[spo2_channel].tolist())
+        ir_ppg = data[ir_channel]
+        red_ppg = data[red_channel]
+        green_ppg = data[green_channel]
+
+        self.curves[0].setData(ir_ppg)
+        self.curves[1].setData(red_ppg)
+        self.curves[2].setData(green_ppg)
+
+        if data.shape[1] > 8192:            
+            latest_hr_val = DataFilter.get_heart_rate(ppg_ir=ir_ppg, ppg_red=red_ppg, ppg_green=green_ppg, sampling_rate=self.sampling_rate, fft_size=8192)
+            latest_hrv_val = DataFilter.get_rmssd_hrv(ppg_ir=ir_ppg, ppg_red=red_ppg, ppg_green=green_ppg, sampling_rate=self.sampling_rate)
 
         latest_values_text += f"Current heart rate: {latest_hr_val:.2f}\n"
-        latest_values_text += f"Current SPO2 value: {latest_spo2_val:.2f}\n"
-    
+        latest_values_text += f"Current RMSSD HRV value: {latest_hrv_val:.2f}\n"
         self.text_label.setText(latest_values_text)
         self.app.processEvents()
 
