@@ -1,7 +1,7 @@
 [![MindroveLogo](https://mindrove.com/wp-content/uploads/2023/04/MindRove_logo_2023.svg)](https://mindrove.com)
 # <p align="center">Official SDK</p>
 
-# <p align="center"><a href="https://pypi.org/project/mindrove/"><img alt="PYPI" src="https://static.pepy.tech/personalized-badge/mindrove?period=total&units=international_system&left_color=grey&right_color=blue&left_text=Downloads PYPI"></a> <a href="https://www.nuget.org/packages/mindrove/"><img alt="Nuget" src="https://img.shields.io/nuget/dt/mindrove?color=blue&label=Downloads Nuget&logo=MindRove"></a></p>
+# <p align="center"><a href="https://pypi.org/project/mindrove/"><img alt="PYPI" src="https://static.pepy.tech/personalized-badge/mindrove?period=total&units=international_system&left_color=grey&right_color=blue&left_text=Downloads%20PYPI"></a> <a href="https://www.nuget.org/packages/mindrove/"><img alt="Nuget" src="https://img.shields.io/nuget/dt/mindrove?color=blue&label=Downloads%20Nuget&logo=MindRove"></a></p>
 
 # <p align="center">![Cpp-Examples](https://img.shields.io/github/actions/workflow/status/MindRove/MindRoveSDK/cpp-check.yml?label=CPP%20Examples) [![License](https://img.shields.io/badge/License-Apache_2.0-yellow.svg)](https://opensource.org/licenses/Apache-2.0) <br> ![Linux](https://img.shields.io/badge/Linux-Supported-green) ![Win](https://img.shields.io/badge/Windows-Supported-green) ![OSX](https://img.shields.io/badge/MacOS-Supported-green)</p>
 
