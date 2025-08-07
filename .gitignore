@@ -1,12 +1,16 @@
 .vs/*
+.vscode
 *.pdb
 *.cache
 *.pyc
 *.db
-Release/*
-Debug/*
+Release/
+Debug/
 obj/*
 __pycache__/*
+examples/*/[Bb]in
+examples/*/mindrovesdk*
+*.zip
 
 # Unity gitignore
 

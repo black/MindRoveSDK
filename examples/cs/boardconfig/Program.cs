@@ -7,7 +7,7 @@ namespace boardconfig
     internal class Program
     {
         static BoardShim board_shim = null;
-        static int sampling_rate = 250;
+        static int sampling_rate = 500;
         static int counter_idx = 0;
         static int trigger_idx = 0;
         static int n_package = 0;
@@ -32,7 +32,7 @@ namespace boardconfig
                 trigger_idx = BoardShim.get_other_channels(board_id)[0];
                 Console.WriteLine("Device ready");
             }
-            catch (MindRoveException ex)
+            catch (MindRoveError ex)
             {
                 Console.WriteLine(ex);
             }
@@ -152,7 +152,7 @@ namespace boardconfig
                 {
                     board_shim.release_session();
                 }
-                catch (MindRoveException e)
+                catch (MindRoveError e)
                 {
                     Console.WriteLine(e);
                 }

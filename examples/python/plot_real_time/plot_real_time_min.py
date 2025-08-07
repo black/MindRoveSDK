@@ -54,9 +54,9 @@ class Graph:
                                         FilterTypes.BUTTERWORTH.value, 0)
             DataFilter.perform_bandpass(data[channel], self.sampling_rate, 51.0, 100.0, 2,
                                         FilterTypes.BUTTERWORTH.value, 0)
-            DataFilter.perform_bandstop(data[channel], self.sampling_rate, 50.0, 4.0, 2,
+            DataFilter.perform_bandstop(data[channel], self.sampling_rate, 4.0, 50.0, 2,
                                         FilterTypes.BUTTERWORTH.value, 0)
-            DataFilter.perform_bandstop(data[channel], self.sampling_rate, 60.0, 4.0, 2,
+            DataFilter.perform_bandstop(data[channel], self.sampling_rate, 4.0, 60.0, 2,
                                         FilterTypes.BUTTERWORTH.value, 0)
             self.curves[count].setData(data[channel].tolist())
 
@@ -70,7 +70,7 @@ def main():
 
 
     params = MindRoveInputParams()
-
+    board_shim = None
     try:
         board_shim = BoardShim(BoardIds.MINDROVE_WIFI_BOARD, params)
         board_shim.prepare_session()
@@ -80,7 +80,7 @@ def main():
         logging.warning('Exception', exc_info=True)
     finally:
         logging.info('End')
-        if board_shim.is_prepared():
+        if board_shim is not None and board_shim.is_prepared():
             logging.info('Releasing session')
             board_shim.release_session()
 
